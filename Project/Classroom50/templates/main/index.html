@@ -1,0 +1,36 @@
+{% extends "layout/base.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+    <!-- Join and create classroom links -->
+    <div class="text-center">
+        <a class="btn btn-primary" href="{{ url_for("main.join") }}">Join</a>
+        {% if g.user["role"] == "teacher" %}
+            <a class="btn btn-success" href="{{ url_for("main.create") }}">New</a>
+        {% endif %}
+    </div>
+
+    {% if classrooms %}
+        <h1 class="heading-5 text-center">Your classrooms:</h1>
+        
+        <!-- Classrooms list -->
+        <ul class="list-group">
+            {% for classroom in classrooms %}
+                <a class="list-group-item list-group-item-action shadow-sm" href="{{ url_for("classroom.home.home", classroom_id=classroom["id"]) }}">
+                    <h4 class="mb-0">{{ classroom["name"] }}</h4>
+                    {% if classroom["description"] %}
+                        <p class="mt-1 mb-0">{{ classroom["description"] }}</p>
+                    {% endif %}
+                    {% if classroom["subject"] %}
+                        <p class="small mt-1 mb-0">{{ classroom["subject"] }}</p>
+                    {% endif %}
+                </a>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h1 class="heading-5 text-center">You aren't part of any classroom!</h1>
+    {% endif %}
+{% endblock %}

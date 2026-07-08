@@ -1,0 +1,44 @@
+{% extends "layout/base.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+    <!-- Login form -->
+    <form action="{{ url_for("auth.login") }}" method="post">
+        <h2 class="text-center mb-3">Log In</h2>
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-4">
+                <input class="form-control" name="username" type="text" placeholder="Username" autocomplete="off" autofocus required>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-4">
+                <input class="form-control" name="password" type="password" placeholder="Password" autocomplete="off" required>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input class="form-check-input" id="showPassword" type="checkbox">
+                    <label class="form-check-label" for="showPassword">
+                        Show password
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="d-grid">
+                    <button class="btn btn-primary" type="submit">Log In</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for("static", filename="toggle_password.js") }}"></script>
+{% endblock %}

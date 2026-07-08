@@ -1,0 +1,17 @@
+{% extends "layout/base.html" %}
+
+{% block navbar %}
+    {{ super() }}
+    
+    <!-- Classroom navigation bar -->
+    <div class="nav-scroller bg-light shadow-sm rounded">
+        <nav class="nav justify-content-center" aria-label="Secondary navigation">
+            <a class="nav-link" href="{{ url_for("classroom.home.home", classroom_id=classroom_id) }}">Home</a>
+            <a class="nav-link" href="{{ url_for("classroom.assignments.assignments", classroom_id=classroom_id) }}">Assignments</a>
+            <a class="nav-link" href="{{ url_for("classroom.members.members", classroom_id=classroom_id) }}">Members</a>
+            {% if g.user["id"] == g.classroom_owner_id %}
+                <a class="nav-link" href="{{ url_for("classroom.manage.settings", classroom_id=classroom_id) }}">Settings</a>
+            {% endif %}
+        </nav>
+    </div>
+{% endblock %}

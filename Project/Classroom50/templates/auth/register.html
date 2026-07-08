@@ -1,0 +1,77 @@
+{% extends "layout/base.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <!-- Registration form -->
+    <form action="{{ url_for("auth.register") }}" method="post">
+        <h2 class="text-center mb-3">Register</h2>
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-4">
+                <input class="form-control" name="name" type="text" placeholder="Name" autocomplete="off" autofocus required>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-2">
+            <div class="col-md-4">
+                <input class="form-control" name="username" type="text" placeholder="Username" autocomplete="off" required>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <p class="small mb-3">&#9432; Username must contain at least 4 characters and no spaces.</p>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-2">
+            <div class="col-md-2 mb-lg-0 mb-3">
+                <input class="form-control" name="password" type="password" placeholder="Password" autocomplete="off" required>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" name="confirmation" type="password" placeholder="Confirm" autocomplete="off" required>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <p class="small mb-2">&#9432; Password must contain at least 8 characters with a mix of letters, numbers, symbols and no spaces.</p>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-2">
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input class="form-check-input" id="showPassword" type="checkbox">
+                    <label class="form-check-label" for="showPassword">
+                        Show password
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-4">
+                <fieldset class="text-center">
+                    <legend class="col-form-label">Your role:</legend>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" id="student" name="role" type="radio" value="student" required>
+                        <label class="form-check-label" for="student">Student</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" id="teacher" name="role" type="radio" value="teacher" required>
+                        <label class="form-check-label" for="teacher">Teacher</label>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="d-grid">
+                    <button class="btn btn-success" type="submit">Register</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for("static", filename="toggle_password.js") }}"></script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "layout/base.html" %}
+
+{% block title %}
+    Join
+{% endblock %}
+
+{% block main %}
+    <!-- Join classroom form -->
+    <h2 class="text-center mb-3">Join classroom</h2>
+    <form action="{{ url_for("main.join") }}" method="post">
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-2">
+                <input class="form-control" name="code" type="text" placeholder="Code" autocomplete="off" autofocus required>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-2">
+                <div class="d-grid">
+                    <button class="btn btn-primary" type="submit">Join</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

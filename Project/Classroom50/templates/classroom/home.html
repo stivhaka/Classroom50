@@ -1,0 +1,114 @@
+{% extends "layout/classroom.html" %}
+
+{% block title %}
+    Classroom Home
+{% endblock %}
+
+{% block main %}
+    <!-- Classroom information -->
+    <div class="align-items-center p-3 mb-3 text-white bg-info rounded shadow-sm">
+        <div class="lh-1">
+            <h5 class="mb-0">
+                {{ classroom["name"] }}
+            </h5>
+            {% if classroom["description"] %}
+                <p class="mb-0 mt-1">{{ classroom["description"] }}</p>
+            {% endif %}
+            {% if classroom["subject"] %}
+                <p class="small mt-2 mb-0">{{ classroom["subject"] }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Post section -->
+    <div class="my-3 p-3 rounded shadow-sm">
+        <div class="row">
+            <div class="col-md-auto">
+                <h4>Posts</h4>
+            </div>
+            <div class="col-md-auto ms-auto">
+                <a class="btn btn-success" href="{{ url_for("classroom.home.post", classroom_id=classroom_id) }}">New post</a>
+            </div>
+        </div>
+        <hr class="border border-primary border-2 opacity-75">
+
+        {% if posts %}
+
+            <!-- Posts list -->
+            <ul class="list-group list-group-flush mb-3">
+                {% for post in posts %}
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-auto">
+
+                                <!-- Timestamp -->
+                                <p class="small text-muted mb-1">Posted by {{ post["author"] }} on {{ post["timestamp"] }} UTC</p>
+                            </div>
+
+                            {% if g.user["id"] == post["author_id"] or g.user["id"] == g.classroom_owner_id %}
+                                <div class="col-md-auto">
+
+                                    <!-- Delete post form -->
+                                    <form action="{{ url_for("classroom.home.delete_post", classroom_id=classroom_id, post_id=post["id"]) }}" method="post">
+                                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Post title and body -->
+                        <div class="fw-bold mb-1">{{ post["title"] }}</div>
+                        <p class="small">{{ post["body"] }}</p>
+
+                        <!-- Comment form -->
+                        <form action="{{ url_for("classroom.home.comment", classroom_id=classroom_id, post_id=post["id"]) }}" method="post">
+                            <div class="row">
+                                <div class="col-md-auto mb-2">
+                                    <input class="form-control form-control-sm" name="body" type="text" placeholder="Say something" autocomplete="off" required>
+                                </div>
+                                <div class="col-md-auto">
+                                    <button class="btn btn-primary btn-sm" type="submit">Comment</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Comment section -->
+                        <ul class="list-unstyled mt-2">
+                            <p class="small mb-0">Comments:</p>
+                            {% for comment in comments %}
+                                {% if comment["post_id"] == post["id"] %}
+                                    <li>
+                                        <div class="ms-4 mt-2 me-auto">
+                                            <div class="row">
+                                                <div class="col-md-auto">
+
+                                                    <!-- Timestamp -->
+                                                    <p class="small text-muted mb-1">{{ comment["author"] }} on {{ comment["timestamp"] }} UTC</p>
+                                                </div>
+
+                                                {% if g.user["id"] == comment["author_id"] or g.user["id"] == g.classroom_owner_id %}
+                                                    <div class="col-md-auto">
+
+                                                        <!-- Delete comment -->
+                                                        <form action="{{ url_for("classroom.home.delete_comment", classroom_id=classroom_id, comment_id=comment["id"]) }}" method="post">
+                                                            <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                                                        </form>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Post body -->
+                                            <p class="small mb-0">{{ comment["body"] }}</p>
+                                        </div>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h6 class="text-center text-muted">No posts</h6>
+        {% endif %}
+    </div>
+{% endblock %}

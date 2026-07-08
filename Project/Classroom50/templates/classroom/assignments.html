@@ -1,0 +1,114 @@
+{% extends "layout/classroom.html" %}
+
+{% block title %}
+    Assignments
+{% endblock %}
+
+{% block main %}
+    <div class="mb-3 p-3 rounded shadow-sm">
+        <div class="row">
+
+            <!-- Assignment title-->
+            <div class="col-md-auto">
+                <h4>Assignments</h4>
+            </div>
+
+            <!-- Create assignment -->
+            {% if g.user["role"] == "teacher" %}
+                <div class="col-md-auto ms-auto">
+                    <a class="btn btn-success" href="{{ url_for("classroom.assignments.create", classroom_id=classroom_id) }}">New assignment</a>
+                </div>
+            {% endif %}
+        </div>
+        <hr class="border border-primary border-2 opacity-75">
+
+        <!-- Assignments list -->
+        {% if assignments %}
+            <ul class="list-group list-group-flush">
+                {% for assignment in assignments %}
+                    <li class="list-group-item">
+                        <div class="ms-2 me-auto">
+
+                            <!-- Timestamp -->
+                            <p class="small text-muted mb-0">Created by {{ assignment["author"] }} on {{ assignment["timestamp"] }} UTC</p>
+
+                            <!-- Assignment title -->
+                            <div class="fw-bold">{{ assignment["title"] }}</div>
+
+                            <!-- Deadline -->
+                            {% if assignment["deadline"] %}
+                                <p class="small text-danger mb-1">
+                                    Deadline: {{ assignment["deadline"] }} UTC
+                                    {% if assignment["deadline"] <= datetime_now %}
+                                        (OVERDUE)
+                                    {% endif %}
+                                </p>
+                            {% else %}
+                                <p class="small text-muted mb-1">
+                                    No deadline
+                                </p>
+                            {% endif %}
+
+                            <div class="row">
+                                {% if g.user["id"] == assignment["author_id"] %}
+                                    <div class="col-md-auto mb-1">
+
+                                        <!-- Submissions link -->
+                                        <a class="btn btn-primary btn-sm" href="{{ url_for("classroom.assignments.submissions", classroom_id=classroom_id, assignment_id=assignment["id"]) }}">Submissions</a>
+                                    </div>
+                                {% endif %}
+
+                                {% if g.user["id"] == assignment["author_id"] or g.user["id"] == g.classroom_owner_id %}
+                                    <div class="col-md-auto">
+
+                                        <!-- Delete assignment form -->
+                                        <form action="{{ url_for("classroom.assignments.delete_assignment", classroom_id=classroom_id, assignment_id=assignment["id"]) }}" method="post">
+                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    </div>
+                                {% endif %}
+
+                                {% if g.user["role"] == "student" %}
+                                    {% for submission in submissions %}
+                                        {% if submission["assignment_id"] == assignment["id"] %}
+                                            <div class="col-md-auto">
+                                                <p class="small text-success mb-1">
+                                                    You have submitted this assignment (File: {{ submission["filename"] }})
+                                                    {% if submission["grade"] %}
+                                                        <p class="small text-primary mb-1">Grade: {{ submission["grade"] }}
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-auto mb-1">
+                                                <form action="{{ url_for("classroom.assignments.delete_submission", classroom_id=classroom_id, assignment_id=submission["assignment_id"], submission_id=submission["id"]) }}" method="post">
+                                                    <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                                                </form>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if assignment["deadline"] and assignment["deadline"] > datetime_now or not assignment["deadline"] %}
+                                    
+                                        <!-- Submit form -->
+                                        <form action="{{ url_for("classroom.assignments.submit", classroom_id=classroom_id, assignment_id=assignment["id"]) }}" method="post" enctype="multipart/form-data">
+                                            <div class="row">
+                                                <div class="col-md-auto mb-1">
+                                                    <input class="form-control form-control-sm" name="file" type="file" required>
+                                                </div>
+                                                <div class="col-md-auto">
+                                                    <button class="btn btn-primary btn-sm" type="submit">Submit</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h6 class="text-center text-muted">No assignments</h6>
+        {% endif %}
+    </div>
+{% endblock %}
