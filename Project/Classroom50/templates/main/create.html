@@ -1,0 +1,34 @@
+{% extends "layout/base.html" %}
+
+{% block title %}
+    Create
+{% endblock %}
+
+{% block main %}
+    <!-- Create classroom form -->
+    <h2 class="text-center mb-3">Create new classroom</h2>
+    <form action="{{ url_for("main.create") }}" method="post">
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-4">
+                <input class="form-control" name="name" type="text" placeholder="Name" autocomplete="off" autofocus required>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-4">
+                <textarea class="form-control" name="description" placeholder="Description (Optional)" autocomplete="off" rows="5"></textarea>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-4">
+                <input class="form-control" name="subject" type="text" placeholder="Subject (Optional)" autocomplete="off">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="d-grid">
+                    <button class="btn btn-success" type="submit">Create</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

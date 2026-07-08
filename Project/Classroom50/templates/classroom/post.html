@@ -1,0 +1,29 @@
+{% extends "layout/classroom.html" %}
+
+{% block title %}
+    New Post
+{% endblock %}
+
+{% block main %}
+    <!-- Create post form -->
+    <h2 class="text-center mb-3">New post</h2>
+    <form action="{{ url_for("classroom.home.post", classroom_id=classroom_id) }}" method="post">
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-4">
+                <input class="form-control" name="title" type="text" placeholder="Title" autocomplete="off" autofocus required>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-4">
+                <textarea class="form-control" name="body" placeholder="Body" autocomplete="off" required rows="5"></textarea>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="d-grid">
+                    <button class="btn btn-success" type="submit">Post</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

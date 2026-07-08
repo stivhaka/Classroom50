@@ -1,0 +1,44 @@
+{% extends "layout/base.html" %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block main %}
+    <!-- User profile -->
+    <h1 class="heading-5 mb-3">Your profile</h1>
+    <div class="col-md-8">
+        
+        <!-- User information -->
+        <ul class="list-group list-group-flush rounded shadow-sm mb-4">
+            <li class="list-group-item">
+                <p class="lead">Name: {{ g.user["name"] }}</p>
+            </li>
+            <li class="list-group-item">
+                <p class="lead">Username: {{ g.user["username"] }}</p>
+            </li>
+            <li class="list-group-item">
+                <p class="lead">Role: {{ g.user["role"] }}</p>
+            </li>
+        </ul>
+
+        <!-- Change password form -->
+        <p class="lead">Change your password</p>
+        <form action="{{ url_for("profile.profile") }}" method="post">
+            <input class="form-control w-auto mb-1" name="password" type="password" placeholder="New Password" required>
+            <p class="small mb-2">&#9432; Password must contain at least 8 characters with a mix of letters, numbers, symbols and no spaces.</p>
+            <div class="form-check mb-2">
+                <input class="form-check-input" id="showPassword" type="checkbox">
+                <label class="form-check-label" for="showPassword">
+                    Show password
+                </label>
+            </div>
+            <button class="btn btn-primary">Change</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for("static", filename="toggle_password.js") }}"></script>
+{% endblock %}

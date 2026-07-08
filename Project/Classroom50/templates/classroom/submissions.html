@@ -1,0 +1,60 @@
+{% extends "layout/classroom.html" %}
+
+{% block title %}
+    Submissions
+{% endblock %}
+
+{% block main %}
+    <h4 class="text-center mb-3">Showing submissions for {{ assignment["title"] }}</h4>
+    <div class="my-3 p-3 rounded shadow-sm">
+        {% if submissions %}
+
+            <!-- Submissions list -->
+            <ul class="list-group list-group-flush">
+                {% for submission in submissions %}
+                    <li class="list-group-item justify-content-between align-items-start">
+                        <div class="row">
+                            <div class="col-md-auto">
+
+                                <!-- Submission filename and author -->
+                                <div class="fw-bold">{{ submission["filename"] }}</div>
+                                <p class="mb-1">submitted by {{ submission["author"] }}</p>
+
+                                {% if submission ["grade"] %}
+
+                                    <!-- Submission grade -->
+                                    <p class="text-primary mb-1">Grade: {{ submission["grade"] }}</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-auto mb-1 me-2 ms-auto">
+
+                                <!-- Download submission link -->
+                                <a class="btn btn-success btn-sm" href="{{ url_for("classroom.assignments.download", classroom_id=classroom_id, assignment_id=assignment["id"], submission_id=submission["id"]) }}">Download</a>
+                            </div>
+
+                            <div class="col-md-auto">
+
+                                <!-- Grade submission form -->
+                                <form action="{{ url_for("classroom.assignments.grade", classroom_id=classroom_id, assignment_id=assignment["id"], submission_id=submission["id"]) }}" method="post">
+                                    <select class="form-select form-select-sm w-auto mb-1" name="grade" >
+                                        <option selected>Grade</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                        <option value="E">E</option>
+                                        <option value="F">F</option>
+                                    </select>
+                                    <button class="btn btn-primary btn-sm" type="submit">Grade</button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h6 class="text-muted text-center">No submissions</h6>
+        {% endif %}
+    </div>
+{% endblock %}

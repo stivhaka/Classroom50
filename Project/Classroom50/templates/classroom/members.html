@@ -1,0 +1,66 @@
+{% extends "layout/classroom.html" %}
+
+{% block title %}
+    Members
+{% endblock %}
+
+{% block main %}
+    <div class="mb-3 p-3 rounded shadow-sm">
+
+        <!-- Teachers list -->
+        <h3>Teachers</h3>
+        <hr class="border border-primary border-2 opacity-75">
+        <ul class="list-group list-group-flush mb-4">
+            <li class="list-group-item">
+                <p class="lead mb-1">{{ owner["name"] }} (Owner)</p>
+            </li>
+
+            {% for teacher in teachers %}
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-auto">
+                            <p class="lead mb-0">{{ teacher["name"] }}</p>
+                        </div>
+                        <div class="col">
+                            {% if g.user["id"] == g.classroom_owner_id %}
+
+                                <!-- Remove user form -->
+                                <form action="{{ url_for("classroom.members.remove", classroom_id=classroom_id, user_id=teacher["id"]) }}" method="post">
+                                    <button class="btn btn-danger">Remove</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Students list -->
+        <h3>Students</h3>
+        <hr class="border border-primary border-2 opacity-75">
+        {% if students %}
+            <ul class="list-group list-group-flush">
+                {% for student in students %}
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <p class="lead mb-0">{{ student["name"] }}</p>
+                            </div>
+                            <div class="col">
+                                {% if g.user["id"] == g.classroom_owner_id %}
+
+                                    <!-- Remove user form -->
+                                    <form action="{{ url_for("classroom.members.remove", classroom_id=classroom_id, user_id=student["id"]) }}" method="post">
+                                        <button class="btn btn-danger">Remove</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h6 class="text-center text-muted">No students</h6>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "layout/classroom.html" %}
+
+{% block title %}
+    Settings
+{% endblock %}
+
+{% block main %}
+    <!-- Classroom settings -->
+    <div class="mb-3 p-3 rounded shadow-sm">
+        <h4>Classroom settings</h4>
+        <hr class="border border-primary border-2 opacity-75">
+        <div class="row">
+            <div class="col-md-auto">
+                <p class="lead mb-1">Classroom code: {{ code }}</p>
+            </div>
+            <div class="col-md-auto">
+                
+                <!-- Reset code form -->
+                <form action="{{ url_for("classroom.manage.reset_code", classroom_id=classroom_id) }}" method="post">
+                    <button class="btn btn-primary" type="submit">Reset code</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <p class="small text-muted mb-0">The classroom code allows other users to join your classorom. Only share this code with people who you trust!</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row mb-2">
+            <div class="col-md-3">
+
+                <!-- Delete classroom form -->
+                <form action="{{ url_for("classroom.manage.delete_classroom", classroom_id=classroom_id) }}" method="post">
+                    <button class="btn btn-danger" type="submit">Delete classroom</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <p class="small text-warning mb-0">DELETING A CLASSROOM WILL DELETE ALL OF IT'S DATA! THE DELETION PROCESS IS IRREVERSIBLE SO PROCEED WITH CAUTION!</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

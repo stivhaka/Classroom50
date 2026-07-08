@@ -1,0 +1,37 @@
+{% extends "layout/classroom.html" %}
+
+{% block title %}
+    New assignment
+{% endblock %}
+
+{% block main %}
+    <!-- Create assignment form -->
+    <h2 class="text-center mb-3">New assignment</h2>
+    <form action="{{ url_for("classroom.assignments.create", classroom_id=classroom_id) }}" method="post">
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-4">
+                <input class="form-control" name="title" type="text" placeholder="Title" autocomplete="off" autofocus required>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-2 mb-2">
+                <input class="form-control" name="date" type="date" min="{{ date_now }}">
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" name="time" type="time">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <p class="small mb-3">&#9432; Timezone used in deadlines is UTC. Minimum assignment deadline is 20 minutes.</p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="d-grid">
+                    <button class="btn btn-success" type="submit">Create</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
